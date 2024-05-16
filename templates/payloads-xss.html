@@ -1,0 +1,154 @@
+{% extends "dashboard.html" %}
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>XSS Payloads</title>
+
+</head>
+{% block content %}
+
+
+
+<style>
+      body{
+        min-height: 100vh;
+      }
+    *{
+        font-family: 'Syne', sans-serif ;
+    }
+    .payload-item {
+        border: 1px solid #00ff55;
+        border-radius: 10px;
+        background: #0a110fae;
+        margin-bottom: 10px;
+        padding: 20px;
+        position: relative;
+        width: -webkit-fill-available;
+    }
+    .p{
+        color: white;
+    }
+    .payload-list{
+        flex-direction: column !important;
+        margin: 2rem;
+        gap: 1rem;
+    }
+    @media (max-width:768px) {
+        .payload-list{
+            flex-wrap: wrap !important;
+        }
+        .btn {
+        font-size: 0px !important;
+}
+.copy-button{
+align-self: start;
+}
+.footer{
+    overflow-y: scroll;
+}
+    }
+    .copy-notification {
+    position: fixed;
+    bottom: 40px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #172622fb;
+    color: #00ff00;
+    padding: 16px;
+    border-radius: 5px;
+    z-index: 1000;
+    display: none; 
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateX(-50%) translateY(100%);
+    }
+    to {
+        transform: translateX(-50%) translateY(0);
+    }
+}
+
+.circle-button:hover::after {
+    content: "Add payload" !important;
+    position: fixed;
+    background-color: #00000095;
+    color: rgba(255, 255, 255, 0.714);
+    padding-inline: 5px;
+    border-radius: 5px;
+    right: 85px;
+    font-size: 13px;
+    }
+.show {
+    display: block;
+    animation: slideIn 0.5s ease forwards;
+}
+
+.hidden {
+    display: none;
+}
+</style>
+<body>
+    <div class="" style="width: 100%; padding-bottom: 13vh;">
+        <h1 style="color: #00ff00 ;">XSS Payloads</h1>
+        <ul class="payload-list" style="padding-left: 0;">
+            {% for payload in payloads %}
+                <li class="payload-item" style="display: flex; justify-content: space-between;
+                align-items: center;">
+                    <span style="display: flex; flex-direction: column;">
+                        <strong style="color: #00ff00 ; padding: 5px;">Payload: <p class="p" >{{ payload.payload }}</p> </strong> 
+                        <strong style="color: #00ff00 ; padding: 5px;">Notes:<p class="p" >{{ payload.notes }}</p> </strong> 
+                        
+                    </span>
+                    
+                    <button type="submit" class="copy-button btn"
+                            data-clipboard-text="{{ payload.payload }}" style="width: fit-content; display: inline-table;"><img src="{{ url_for('static', filename='copy.png') }}" width="25" height="25" alt="" style=""></button>
+                </li>
+            {% endfor %}
+            <div id="copy-notification" class="copy-notification hidden">Payload copied to clipboard!</div>
+        </ul>
+        {% if 'admin' in current_user.roles %}
+            <a href="{{ url_for('add_payload_xss') }}" class="circle-button">+</a>
+        {% endif %}
+    </div>
+    
+    <!-- Clipboard.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js"></script>
+    <script>
+       var clipboard = new ClipboardJS('.copy-button');
+
+clipboard.on('success', function (e) {
+    var notification = document.getElementById('copy-notification');
+    notification.classList.remove('hidden');
+    notification.classList.add('show');
+    console.log('Notification shown');
+    
+    // Hide the notification after 3 seconds
+    setTimeout(function () {
+        notification.classList.remove('show');
+        console.log('Notification hidden');
+    }, 3000);
+});
+
+clipboard.on('error', function (e) {
+    alert('Unable to copy payload to clipboard.');
+});
+
+
+ </script>
+    
+<script>
+    document.querySelectorAll('.fire-xss-button').forEach(function(button) {
+        button.addEventListener('click', function() {
+            var xssId = button.getAttribute('data-xss-id');
+            console.log('XSS Fire clicked for XSS ID:', xssId);
+        });
+    });
+</script>
+</body>
+{% endblock %}
+</html>

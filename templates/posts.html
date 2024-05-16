@@ -1,0 +1,497 @@
+{% extends 'dashboard.html' %}
+{% block title %}
+{% endblock %}
+
+{% block additional_css %}
+    <!-- Include Bootstrap CSS -->
+<link rel="stylesheet" href="{{ url_for('static', filename='dashboard.css') }}">
+{% endblock %}
+{% block head %}
+    <!-- ... other head elements ... -->
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+{% endblock %}
+
+{% block content %}
+<style>
+   .form-control{
+    margin-bottom: 1rem;
+   }
+   .btn{
+    margin-top: 1rem;
+   }
+    .srch{
+    width: auto;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #28a745;
+    background: #0f2014;
+    color: #00ff00;
+    font-size: 18px;
+    cursor: pointer;
+
+    }
+    .container {
+    margin-bottom: 0rem !important;
+   
+}
+ main{
+    height: 100%;
+    margin-inline: 1rem;
+ }
+ .posts{
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+    margin-bottom: 1rem !important;
+    padding: 1rem;
+    }
+    .post{
+        max-height: calc(100vh - 200px);
+        overflow-y: scroll;
+    }
+.user-info{
+     align-items: center;
+     justify-content: space-between;
+     margin-bottom: 1rem;
+    }
+    .edt{
+       
+        display: inline-block;
+    }
+    .contact{
+        width: 100%;
+    }
+    img{
+        width: 100%;
+    }
+    @media (max-width: 1400px) {
+        .posts{
+            grid-template-columns: repeat(1, 1fr);
+            justify-items: center;
+            margin: 0;
+        }}
+    @media (max-width: 768px) {
+        .posts{
+            grid-template-columns: repeat(1, 1fr);
+            justify-items: center;
+            margin: 0;
+        }
+        .srch{
+            width: auto;
+    
+        }
+        .icon{
+            width: 28px !important;
+            height: 28px !important;
+        }
+        .user-info{
+            flex-direction: row;
+        }
+        h1{
+            font-size: 1.5em;
+        }
+        .ics{
+            display: flex;
+        }
+        #search{
+            width: 80% !important;
+        }
+        main{
+            margin-inline: 0rem;
+        }
+    }
+    @media (max-width: 375px){
+        .srch{
+           
+           
+        }
+
+    }
+    .circle-button {
+    display: inline-block;
+    width: 60px; 
+    height: 60px; 
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: #0f2014;
+    color: #00ff00;
+    text-decoration: none;
+    border: 2px solid #337346;
+    border-radius: 50%;
+    text-align: center;
+    line-height: 55px; /* Should be equal to the height for vertical alignment */
+    font-size: 2em;
+    z-index: 1000;
+}
+
+.circle-button:hover {
+    background: #010201;
+   
+}
+.circle-button:hover::after {
+    content: "Add post";
+    position: fixed;
+    background-color: #00000095;
+    color: rgba(255, 255, 255, 0.714);
+    padding-inline: 5px;
+    border-radius: 5px;
+    right: 85px;
+    font-size: 13px;
+    }
+.action-buttons {
+    display: flex;
+    align-items: center;
+    justify-content: start;
+}
+
+.action-button {
+    border: none;
+    background: none;
+    padding: 5px;
+    margin: 0 5px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+.delete-button img,
+.edit-button img {
+    width: 32px;
+    height: 32px;
+    transition: transform 0.3s ease;
+}
+
+.action-button:hover img {
+    transform: scale(1.1);
+}
+
+/* Optional: Add a tooltip */
+.action-button {
+    position: relative;
+}
+
+.action-button::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: black;
+    color: white;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    display: none;
+    white-space: nowrap;
+}
+
+.action-button:hover::after {
+    display: block;
+}
+
+.delete-button::after {
+    content: 'Delete';
+    /* Customize further as needed */
+}
+
+.edit-button::after {
+    content: 'Edit';
+    /* Customize further as needed */
+}
+.btn-like {
+    background-color: transparent;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    outline: none;
+}
+
+.heart {
+    width: 24px;
+    height: 24px;
+    fill: #0000007a;
+    transition: fill 0.3s ease-in-out;
+}
+
+.btn-like.active .heart {
+    fill: #04ff00; /* Change to desired filled color */
+}
+.markdown-content {
+    /* Set default font size and other properties */
+    font-size: 16px;
+    line-height: 1.5;
+}
+
+/* Media query for smaller screens */
+@media screen and (max-width: 768px) {
+    .markdown-content {
+        /* Adjust font size and other properties for smaller screens */
+        font-size: 16px;
+    }
+}
+
+/* Media query for even smaller screens */
+@media screen and (max-width: 576px) {
+    .markdown-content {
+        /* Further adjust font size and other properties for even smaller screens */
+        font-size: 16px;
+    }
+}
+@media screen and (max-width: 460px) {
+    .user-info{
+      flex-wrap: wrap;
+      flex-direction: column-reverse;
+    }
+    .action-buttons{
+        margin-left: auto;
+    }
+}
+.markdown-content{
+    word-wrap: break-word;
+}
+</style>
+    <div class=" mt-4" style="display: flex; flex-direction: column; width: 100%; ">
+        <form action="{{ url_for('search') }}" method="get" style="margin: 1rem;">
+            <h1 class="mb-4 text-center" style="padding-bottom: 1rem;">Posts</h1>
+            <span style="display: flex; align-items: center;">
+                
+                    <input type="search" name="query" placeholder="Search posts..." required class="form-control" id="search" style=" margin:  0 ; margin-right: 5px; ">
+                    <button type="submit" class="srch" style=" margin:  0 !important; ">Search</button>
+                
+            
+            </span>
+        </form>
+         {% if current_user.is_authenticated %}
+             <a class="circle-button" href="{{ url_for('add_post') }}" >+</a>
+         {% endif %}
+       
+    </div>
+    <div class="posts">
+        {% if posts %}
+            {% for post in posts %}
+                <div class="contact post" data-post-id="{{ post.id }}">
+                    <div class="user-info">
+                        <span style="display: flex; align-items: center; ">
+                        <img src="{{ url_for('static', filename='uploads/' + post.author.image) }}" alt="{{ post.author.username }}'s image" class="user-image" style="margin-right: 5px;">
+                        <span class="username">{{ post.author.username }}</span>
+                        <span class="date">{{ post.created_at.strftime("%B %d, %Y") }}</span>
+                    </span>
+                    {% if post.author == current_user %}
+                           <form action="{{ url_for('delete_post', post_id=post.id) }}" method="post" class="action-buttons">
+                                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                                
+                                <a href="{{ url_for('edit_post', post_id=post.id) }}" class="action-button edit-button">
+                                    <img src="{{ url_for('static', filename='edit1.png') }}" alt="Edit">
+                                </a>
+                                <button type="submit" class="action-button delete-button">
+                                    <img src="{{ url_for('static', filename='delete.png') }}" alt="Delete">
+                                </button>
+                            </form>
+                    {% endif %}
+                    </div>
+
+
+
+                    <!-- Display the post image if it exists -->
+                    {% if post.image_url %}
+                        <div class="post-image">
+                            <img src="{{ url_for('static', filename='uploads/' + post.image_url) }}" alt="{{ post.title }}" class="img-fluid">
+                        </div>
+                    {% endif %}
+
+                    <div class="markdown-content" id="markdown-container-{{ post.id }}">
+                        <a class="h4" style="font-weight: bold; font-size: 20px;" href="{{ url_for('show_post', post_id=post.id) }}">{{ post.title | markdownify_filter}}</a>
+                        <div class="post-description" style="    word-wrap: break-word;">{{ post.description   | safe }}</div>
+                       <!-- |markdownify_filter
+                         <pre><code>{{ post.codeSnippet }}</code><button class="copy-button" onclick="copyToClipboard(this)">Copy</button></pre>-->
+                    </div>
+
+                    <!-- Inside the loop where you display posts -->
+                    <form method="POST" action="{{ url_for('add_reaction') }}" class="reaction-form" style="display: flex; align-items: flex-end;">
+                        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                        <input type="hidden" name="post_id" value="{{ post.id }}">
+                        <button type="button" class="btn btn-like" data-post-id="{{ post.id }}" style="width: auto; gap: 10px; padding: 1rem; display: flex; flex-direction: row; align-items: center;">
+                            <svg class="heart" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+                            </svg> Like
+                        </button>
+                        <span class="like-count" data-like-count="{{ post.like_count }}" style="font-size: 1.1em;">{{ post.like_count }} likes</span>
+                    </form>
+
+                    <!-- Comment form -->
+                    <form method="POST" action="{{ url_for('display_posts') }}" class="comment-form">
+                        {{ forms[post.id].hidden_tag() }}
+                        <input type="hidden" name="submit_button" value="{{ post.id }}">
+                    
+                        <div class="form-group" style="    display: flex;
+                        flex-direction: row;
+                        justify-content: center;
+                        align-items: baseline;
+                        gap: 10px;">
+                           
+                            {{ forms[post.id].text(rows=1, class_='form-control' , placeholder="Add your comment here") }}
+                            {% if forms[post.id].text.errors %}
+                                <div class="errors">
+                                    {% for error in forms[post.id].text.errors %}
+                                        <div class="error">{{ error }}</div>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                            <button type="submit" class="btn " style="width: auto;"><img src="{{ url_for('static', filename='right-arr.png') }}" alt="Delete"></button>
+                        </div>
+                        
+                    </form>
+                
+                    <!-- Toggle comments button -->
+                    <span class="toggle-comments" data-toggle-button="{{ post.id }}" > View Comments</span>
+
+                    <!-- Display existing comments -->
+                    <div class="comments-section" id="comments_{{ post.id }}" style="display: none;">
+                        <h3 class="h6">Comments</h3>
+                        {% for comment in post.comments %}
+                            <div class="comment">
+                                <img src="{{ url_for('static', filename='uploads/' + comment.user.image) }}" alt="{{ comment.user.username }}'s image" class="user-image">
+                                <div>
+                                    <strong class="username">{{ comment.user.username }}:</strong>
+                                    <p>{{ comment.text |markdownify_filter }}</p>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            {% endfor %}
+        {% else %}
+            <p class="text-center">No posts to display.</p>
+        {% endif %}
+    </div>
+
+{% endblock %}
+
+{% block additional_js %}
+    <!-- Include marked.js and DOMPurify -->
+    <script>
+      document.querySelectorAll('.btn-like').forEach(function(button) {
+    button.addEventListener('click', function() {
+        this.classList.toggle('active');
+    });
+});
+
+    </script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const likeButton = document.querySelector('.btn-like');
+            const likeCountElement = document.querySelector('.like-count');
+            let likeCount = parseInt(likeCountElement.dataset.likeCount);
+    
+            likeButton.addEventListener('click', function() {
+                likeCount++;
+                likeCountElement.innerText = likeCount + ' likes';
+            });
+        });
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/dompurify/dist/purify.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('.like-btn').click(function () {
+                var postId = $(this).data('post-id');
+                var csrfToken = $('meta[name="csrf-token"]').attr('content');
+                var button = $(this); // Reference to the like button that was clicked
+
+                // Send a request to the server to register the like
+                $.ajax({
+                    type: 'POST',
+                    url: '{{ url_for('add_reaction') }}',
+                    data: {
+                        post_id: postId,
+                        reaction_type: 'like',
+                        csrf_token: csrfToken
+                    },
+                    success: function(response) {
+                        // Assuming the server sends back the updated like count in the response
+                        var updatedLikeCount = response.like_count;
+
+                        // Find the element that displays the like count within the same form as the like button
+                        var likeCountElement = button.closest('.reaction-form').find('.like-count');
+
+                        // Update the like count element with the new count
+                        likeCountElement.text(updatedLikeCount);
+
+                        // Optionally, change the state of the button to reflect that the user has liked the post
+                        button.addClass('liked');
+                    },
+                    error: function(response) {
+                        // Handle error (e.g., display an error message)
+                        console.error('Error liking post:', response);
+                    }
+                });
+            });
+
+            // Function to toggle the comments section
+            function toggleComments(postId) {
+                var commentsSection = $('#comments_' + postId);
+                commentsSection.toggle(); // Use toggle() to show/hide the comments
+                // Update the button text based on the visibility of the comments section
+                var button = $('[data-toggle-button="' + postId + '"]');
+                button.text(commentsSection.is(':visible') ? 'Hide Comments' : 'View Comments');
+            }
+
+            // Attach a click event listener to all elements with the 'toggle-comments' class
+            $('.toggle-comments').click(function () {
+                // Get the post ID from the data attribute
+                var postId = $(this).data('toggle-button');
+                toggleComments(postId);
+            });
+
+            // Render the Markdown content safely on the client side
+            $('.inside-post').each(function () {
+                var postId = $(this).data('post-id');
+                var markdownContainer = $('#markdown-container-' + postId);
+                var markdownContent = markdownContainer.text();
+
+                // Render the Markdown content
+                var renderedContent = marked(markdownContent);
+
+                // Sanitize the rendered HTML to prevent XSS
+                var sanitizedContent = DOMPurify.sanitize(renderedContent);
+
+                // Update the container with the sanitized content
+                markdownContainer.html(sanitizedContent);
+            });
+        });
+
+        function copyToClipboard(button) {
+        console.log("Copy button clicked"); // Debugging line
+
+        // Get the code text
+        var code = button.previousElementSibling.textContent;
+        console.log("Code to copy:", code); // Debugging line
+
+        // Create a textarea element to help with copying
+        var textarea = document.createElement('textarea');
+        textarea.textContent = code;
+        document.body.appendChild(textarea);
+        textarea.select();
+
+        try {
+            var successful = document.execCommand('copy');
+            var msg = successful ? 'successful' : 'unsuccessful';
+            console.log('Copy command was ' + msg); // Debugging line
+            button.textContent = successful ? 'Copied!' : 'Copy failed';
+        } catch (err) {
+            console.error('Copy failed', err); // Debugging line
+            button.textContent = 'Copy failed';
+        }
+
+        document.body.removeChild(textarea);
+
+        // Reset button text after 2 seconds
+        setTimeout(function() {
+            button.textContent = 'Copy';
+        }, 2000);
+    }
+
+    </script>
+{% endblock %}

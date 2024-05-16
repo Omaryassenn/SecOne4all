@@ -1,0 +1,80 @@
+/* Container styles */
+
+
+/* Form group styles */
+.form-group {
+    margin-bottom: 20px;
+}
+
+/* Label styles */
+label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: #dee2e6;
+}
+
+/* Input styles */
+.form-control {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+   
+    border-radius: 5px;
+}
+
+/* Error message styles */
+.error-message {
+    color: #d9534f; /* Red color for error messages */
+    font-size: 14px;
+}
+
+/* Markdown formatting buttons styles */
+.markdown-buttons {
+    margin-top: 10px;
+}
+
+.markdown-buttons button {
+    padding: 5px 10px;
+    margin-right: 10px;
+    font-size: 14px;
+    background-color: #28a745; /* Blue color for buttons */
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+/* Submit button styles */
+#submit {
+    background-color: #28a745; /* Green color for submit button */
+    text-align: center;
+    border-radius: 10px;
+    font-weight: bold;
+    margin-right: 50%;
+}
+
+/* Textarea styles */
+#markdown-textarea {
+    height: 200px;
+    resize: none;
+    padding: 10px;
+    font-size: 16px;
+   
+    border-radius: 5px;
+}
+
+/* Link input prompt styles */
+.prompt-input {
+    width: 100%;
+    padding: 5px;
+    font-size: 14px;
+}
+
+.footer {
+    
+    width: 100%;
+    background-color: #f8f9fa; /* Adjust the background color as needed */
+    padding: 10px; /* Adjust the padding as needed */
+    text-align: center; /* Adjust the text alignment as needed */
+}

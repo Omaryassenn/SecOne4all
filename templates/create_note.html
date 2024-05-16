@@ -1,0 +1,48 @@
+{% extends "dashboard.html" %}  <!-- Assume you have a base template that includes your site's header, footer, etc. -->
+
+{% block content %}
+<link rel="stylesheet" href="{{ url_for('static', filename='contact.css') }}">
+<style>
+  .contact{
+    width: 100%;
+  }
+  .ddv{
+    width: 35% ;
+  }
+  @media (max-width:768px) {
+    .contact{
+    width: -webkit-fill-available;
+  }
+    .ddv{width: -webkit-fill-available;
+    margin-inline: 1rem;}
+  }
+</style>
+  <div class="ddv">
+    
+    <form method="POST" action="" class="contact">
+      <h1>{{ legend }}</h1>
+      {{ form.hidden_tag() }}
+      <div class="frm-cntct">
+        {{ form.title.label(class="form-control-label"  ) }}
+        {{ form.title(class="form-control" ,  placeholder="Enter the title here") }}
+        {% if form.title.errors %}
+          {% for error in form.title.errors %}
+            <div class="alert alert-danger" role="alert">{{ error }}</div>
+          {% endfor %}
+        {% endif %}
+      </div>
+      <div class="form-group">
+        {{ form.content.label(class="form-control-label") }}
+        {{ form.content(class="form-control" , placeholder="Enter the content here") }}
+        {% if form.content.errors %}
+          {% for error in form.content.errors %}
+            <div class="alert alert-danger" role="alert">{{ error }}</div>
+          {% endfor %}
+        {% endif %}
+      </div>
+      <div class="form-group">
+        {{ form.submit(class="btn btn-primary") }}
+      </div>
+    </form>
+  </div>
+{% endblock %}

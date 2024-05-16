@@ -1,0 +1,20 @@
+{% extends 'dashboard.html' %}
+
+{% block title %}400 - Bad Request{% endblock %}
+
+{% block additional_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='login.css') }}">
+
+    <style>
+       
+    </style>
+{% endblock %}
+
+{% block content %}
+    <div class=""  style="display: flex; flex-direction: column; align-items: center; gap: 1rem; justify-content: center; height: 95%; margin-inline: 1rem;">
+        <h1>400 - Bad Request</h1>
+        <p>Sorry, the request is invalid or malformed.</p>
+        <p><a href="/" style="color: aliceblue;">Go back to the homepage</a></p>
+    </div>
+</body>
+{% endblock %}

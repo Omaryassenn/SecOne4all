@@ -1,0 +1,232 @@
+.form-control{
+    margin-bottom: 1rem;
+   }
+   .btn{
+    margin-top: 1rem;
+   }
+    .srch{
+    width: auto;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #28a745;
+    background: #0f2014;
+    color: #00ff00;
+    font-size: 18px;
+    cursor: pointer;
+
+    }
+    .container {
+    margin-bottom: 0rem !important;
+   
+}
+ main{
+    height: 100%;
+    margin-inline: 1rem;
+ }
+ .posts{
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+    margin-bottom: 1rem !important;
+    padding: 1rem;
+    }
+    .post{
+        max-height: calc(100vh - 200px);
+        overflow-y: scroll;
+    }
+.user-info{
+     align-items: center;
+     justify-content: space-between;
+     margin-bottom: 1rem;
+    }
+    .edt{
+       
+        display: inline-block;
+    }
+    .contact{
+        width: 100%;
+    }
+    img{
+        width: 100%;
+    }
+    @media (max-width: 995px) {
+        .posts{
+            grid-template-columns: repeat(1, 1fr);
+            justify-items: center;
+            margin: 0;
+        }}
+    @media (max-width: 768px) {
+        .posts{
+            grid-template-columns: repeat(1, 1fr);
+            justify-items: center;
+            margin: 0;
+        }
+        .srch{
+            width: auto;
+    
+        }
+        .icon{
+            width: 28px !important;
+            height: 28px !important;
+        }
+        .user-info{
+            flex-direction: row;
+        }
+        h1{
+            font-size: 1.5em;
+        }
+        .ics{
+            display: flex;
+        }
+        #search{
+            width: 80% !important;
+        }
+        main{
+            margin-inline: 0rem;
+        }
+    }
+    @media (max-width: 375px){
+        .srch{
+           
+           
+        }
+
+    }
+    .circle-button {
+    display: inline-block;
+    width: 60px; 
+    height: 60px; 
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: #0f2014;
+    color: #00ff00;
+    text-decoration: none;
+    border: 2px solid #337346;
+    border-radius: 50%;
+    text-align: center;
+    line-height: 55px; /* Should be equal to the height for vertical alignment */
+    font-size: 2em;
+    z-index: 1000;
+}
+
+.circle-button:hover {
+    background: #010201;
+   
+}
+.circle-button:hover::after {
+    content: "Add post";
+    position: fixed;
+    background-color: #00000095;
+    color: rgba(255, 255, 255, 0.714);
+    padding-inline: 5px;
+    border-radius: 5px;
+    right: 85px;
+    font-size: 13px;
+    }
+.action-buttons {
+    display: flex;
+    align-items: center;
+    justify-content: start;
+}
+
+.action-button {
+    border: none;
+    background: none;
+    padding: 5px;
+    margin: 0 5px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+.delete-button img,
+.edit-button img {
+    width: 32px;
+    height: 32px;
+    transition: transform 0.3s ease;
+}
+
+.action-button:hover img {
+    transform: scale(1.1);
+}
+
+/* Optional: Add a tooltip */
+.action-button {
+    position: relative;
+}
+
+.action-button::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    bottom: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: black;
+    color: white;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    display: none;
+    white-space: nowrap;
+}
+
+.action-button:hover::after {
+    display: block;
+}
+
+.delete-button::after {
+    content: 'Delete';
+    /* Customize further as needed */
+}
+
+.edit-button::after {
+    content: 'Edit';
+    /* Customize further as needed */
+}
+.btn-like {
+    background-color: transparent;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    outline: none;
+}
+
+.heart {
+    width: 24px;
+    height: 24px;
+    fill: #0000007a;
+    transition: fill 0.3s ease-in-out;
+}
+
+.btn-like.active .heart {
+    fill: #04ff00; /* Change to desired filled color */
+}
+.markdown-content {
+    /* Set default font size and other properties */
+    font-size: 16px;
+    line-height: 1.5;
+}
+
+/* Media query for smaller screens */
+@media screen and (max-width: 768px) {
+    .markdown-content {
+        /* Adjust font size and other properties for smaller screens */
+        font-size: 16px;
+    }
+}
+
+/* Media query for even smaller screens */
+@media screen and (max-width: 576px) {
+    .markdown-content {
+        /* Further adjust font size and other properties for even smaller screens */
+        font-size: 16px;
+    }
+}
+@media screen and (max-width: 425px) {
+    .user-info{
+      flex-wrap: wrap;
+    }
+    .action-buttons{
+        margin-left: auto;
+    }

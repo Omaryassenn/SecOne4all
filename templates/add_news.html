@@ -1,0 +1,117 @@
+{% extends "dashboard.html" %}
+{% block title %}Add News{% endblock %}
+{% block additional_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='add_post.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='dashboard.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='contact.css') }}">
+{% endblock %}
+{% block content %}
+<style>
+    
+</style>
+<div class="contact">
+    <h1 class="mt-5">Add News</h1>
+    <form method="POST" action="{{ url_for('add_news') }}" enctype="multipart/form-data">
+        {{ form.hidden_tag() }}
+        <div class="form-group">
+            {{ form.title.label }}
+            {{ form.title(class="form-control", placeholder="Enter the news title", required="required") }}
+        </div>
+        <div class="form-group">
+            {{ form.summary.label }}
+            {{ form.summary(class="form-control", placeholder="Enter a summary", required="required") }}
+        </div>
+        <div class="form-group" id="content">
+            {{ form.content.label }}
+            {{ form.content(class="form-control", placeholder="Enter the news content",id="markdown-textarea" , required="required", rows=6) }}
+            {% if form.content.errors %}
+                <div class="error-message alert alert-danger">{{ form.content.errors | join(", ") }}</div>
+            {% endif %}
+        </div>
+      <!--  <div class="form-group">
+            {{ form.content.label }}
+            {{ form.content(class="form-control", placeholder="Enter the news content", required="required", rows=6) }}
+        </div>-->
+        <div class="form-group">
+            {{ form.image.label }}
+            {{ form.image(class="form-control-file", accept="image/*") }}
+        </div>
+        <div class="markdown-buttons " style="display: flex; margin-bottom: 10px;">
+            <button type="button" class="btn btn-secondary" onclick="insertMarkdown('**', '**')">Bold</button>
+            <button type="button" class="btn btn-secondary" onclick="insertMarkdown('_', '_')">Italic</button>
+            <button type="button" class="btn btn-secondary" onclick="insertMarkdown('```', '```')">Code</button>
+            <button type="button" class="btn btn-secondary" onclick="insertLink()">Link</button>
+            <button type="button" class="btn btn-secondary" onclick="insertImage()">Image</button>
+        </div>
+        <button class="btn btn-primary" type="submit">Add News</button>
+    </form>    
+</div>
+<script>
+    // Function to insert Markdown syntax at the cursor position
+    function insertMarkdown(openTag, closeTag) {
+        const textarea = document.getElementById('markdown-textarea');
+        const start = textarea.selectionStart;
+        const end = textarea.selectionEnd;
+        const selectedText = textarea.value.substring(start, end);
+        const replacement = `${openTag}${selectedText}${closeTag}`;
+        textarea.value = textarea.value.substring(0, start) + replacement + textarea.value.substring(end);
+        textarea.focus();
+        textarea.selectionStart = start + openTag.length;
+        textarea.selectionEnd = end + openTag.length;
+    }
+
+    // Function to insert an image
+    function insertImage() {
+        const textarea = document.getElementById('markdown-textarea');
+        const start = textarea.selectionStart;
+        const end = textarea.selectionEnd;
+        const imageMarkdown = '![Alt text](image-url)';
+        textarea.value = textarea.value.substring(0, start) + imageMarkdown + textarea.value.substring(end);
+        textarea.focus();
+        textarea.selectionStart = start + imageMarkdown.length;
+        textarea.selectionEnd = start + imageMarkdown.length;
+
+        // Append an image preview to the dynamic-content div
+        const dynamicContentDiv = document.getElementById('dynamic-content');
+        const imagePreview = document.createElement('img');
+        imagePreview.src = 'image-url';  // Update with the actual image URL
+        imagePreview.alt = 'Image Preview';
+        dynamicContentDiv.appendChild(imagePreview);
+    }
+
+    // Function to insert a link
+    function insertLink() {
+        const textarea = document.getElementById('markdown-textarea');
+        const start = textarea.selectionStart;
+        const end = textarea.selectionEnd;
+        const selectedText = textarea.value.substring(start, end);
+        const linkURL = prompt('Enter the URL for the link:');
+        if (linkURL) {
+            const linkMarkdown = `[${selectedText}](${linkURL})`;
+            textarea.value = textarea.value.substring(0, start) + linkMarkdown + textarea.value.substring(end);
+            textarea.focus();
+            textarea.selectionStart = start + linkMarkdown.length;
+            textarea.selectionEnd = start + linkMarkdown.length;
+        }
+    }
+
+    // Example of form validation with Bootstrap
+    (function() {
+        'use strict';
+        window.addEventListener('load', function() {
+            // Fetch all the forms we want to apply custom Bootstrap validation styles to
+            var forms = document.getElementsByClassName('needs-validation');
+            // Loop over them and prevent submission
+            var validation = Array.prototype.filter.call(forms, function(form) {
+                form.addEventListener('submit', function(event) {
+                    if (form.checkValidity() === false) {
+                        event.preventDefault();
+                        event.stopPropagation();
+                    }
+                    form.classList.add('was-validated');
+                }, false);
+            });
+        }, false);
+    })();
+</script>
+{% endblock %}

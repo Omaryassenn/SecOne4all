@@ -1,0 +1,198 @@
+{% extends "dashboard.html" %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Request Data</title>
+   
+</head>
+{% block content %}
+<link rel="stylesheet" href="{{ url_for('static', filename='contact.css') }}">
+<style>
+body{
+    height: 100%;
+    min-height: 100vh;
+}
+    table { width: 100%; border-collapse: collapse; 
+   }
+    th, td { border: 1px solid #00ff00; padding: 8px; text-align: left; }
+    th {     background-color: #0F1D1E; }
+    tr:nth-child(even) { background-color: #0F1D1E;  }
+    main{
+        justify-content: normal;
+    }
+    a{
+        color:#00ff00cc ;
+        
+    }
+    .s{
+        font-size: large;
+    }
+    .copy-button{
+        background-color: transparent !important;
+        padding: 5px !important;
+        margin-bottom: 5px;
+}
+.footer{
+    overflow-y: scroll;
+}
+    
+    .copy-notification {
+    position: fixed;
+    bottom: 40px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #172622fb;
+    color: #00ff00;
+    padding: 16px;
+    border-radius: 5px;
+    z-index: 1000;
+    display: none; 
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateX(-50%) translateY(100%);
+    }
+    to {
+        transform: translateX(-50%) translateY(0);
+    }
+}
+
+
+.show {
+    display: block;
+    animation: slideIn 0.5s ease forwards;
+}
+@media (max-width: 768px){
+.as{
+    width: -webkit-fill-available;
+    margin-inline: 10px;
+}
+}
+.hidden {
+    display: none;
+}
+.table-container {
+    overflow-x: auto !important;
+    width: 96%;
+    margin-left: 2rem !important;
+    margin-right: 2rem !important;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    
+}
+
+th, td {
+    padding: 8px;
+    border: 1px solid #ddd;
+    text-align: left; /* Ensure text alignment is left */
+}
+
+
+
+@media screen and (max-width: 600px) {
+    table {
+        width: 100%;
+    }
+ thead {
+        display: block; /* Display thead on smaller screens */
+        position: absolute;
+        top: -9999px;
+        left: -9999px;
+    }
+    table, thead, tbody, th, td, tr {
+        display: block;
+    }
+
+    thead tr {
+        position: absolute;
+        top: -9999px;
+        left: -9999px;
+    }
+
+    tr { border: 1px solid #ccc; }
+
+    td {
+        border: none;
+        border-bottom: 1px solid #eee;
+        position: relative;
+        padding-left: 50%;
+    }
+
+    td:before {
+        position: absolute;
+        top: 6px;
+        left: 6px;
+        width: 45%;
+        padding-right: 10px;
+        white-space: nowrap;
+        content: attr(data-column); /* Show labels using data-column attribute */
+        font-weight: bold; /* Optionally bold labels */
+    }
+}
+</style>
+<body>
+    <h1>Web Hock Data</h1>
+    <span class="as" style="display: flex;flex-direction: row-reverse; margin-bottom: 2rem; border: 1px solid #00ff00; padding-inline: 1rem; align-items: center; border-radius: 5px;"> 
+        <button type="submit" class="copy-button btn" data-clipboard-text="{{payload}}" style="width: fit-content; display: inline-table;"><img src="{{ url_for('static', filename='copy.png') }}" width="25" height="25" alt="" style=""></button>
+        <p style="margin: 1rem; width: -webkit-fill-available; text-align: center;">Payload: {{payload}}</p>
+    </span>
+    <div id="copy-notification" class="copy-notification hidden">Payload copied to clipboard!</div>
+
+    <div class="table-container" >
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Method</th>
+                    <th>Data</th>
+                    <th>User-Agent</th>
+                    <th>Referer</th>
+                    <th>Host</th>
+                    <th>Time</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for entry in entries %}
+                <tr>
+                    <td>{{ entry.id }}</td>
+                    <td>{{ entry.method }}</td>
+                    <td>{{ entry.data }}</td>
+                    <td>{{ entry.user_agent }}</td>
+                    <td>{{ entry.referer }}</td>
+                    <td>{{ entry.host }}</td>
+                    <td>{{ entry.created_at }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js"></script>
+    <script>
+        var clipboard = new ClipboardJS('.copy-button');
+    
+    clipboard.on('success', function (e) {
+     var notification = document.getElementById('copy-notification');
+     notification.classList.remove('hidden');
+     notification.classList.add('show');
+     console.log('Notification shown');
+     
+     // Hide the notification after 3 seconds
+     setTimeout(function () {
+         notification.classList.remove('show');
+     }, 3000);
+    });
+    
+    clipboard.on('error', function (e) {
+     alert('Unable to copy payload to clipboard.');
+    });
+</script>
+</body>
+
+</html>
+{% endblock %}

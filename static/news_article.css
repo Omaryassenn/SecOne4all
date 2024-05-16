@@ -1,0 +1,101 @@
+
+
+
+h1{
+    color: #00ff00 !important;
+}
+
+.news-article {
+    margin-bottom: 2rem;
+    transition: transform 0.2s ease-in-out; /* Smooth transition for hover effect */
+    max-width: 2500px;
+    }
+
+
+
+.card-header {
+    display: flex; /* Flex layout for header content */
+    align-items: center; /* Align items vertically */
+    padding: 16px; /* Padding for header */
+    border-bottom: 1px solid #00ff00; /* Separator for header */
+}
+
+.card-header img {
+    border-radius: 50%; /* Circular profile image */
+    margin-right: 10px; /* Space between image and text */
+}
+
+.card-header h3 {
+    font-size: 1.25rem; /* Larger font size for author's name */
+    margin-bottom: 0; /* Remove margin below the author's name */
+}
+
+.card-header p {
+    font-size: 0.9rem; /* Smaller font size for date */
+    color: #606770; /* Facebook-like text color for date */
+    margin-left: auto; /* Push the date to the right */
+}
+
+.card-img-top {
+    margin-top:1rem;
+    height: auto;
+}
+
+.card-body {
+    padding: 5px;
+}
+
+.card-title {
+    font-size: 1.5rem; /* Larger font size for the news title */
+    font-weight: bold; /* Bold font weight for the title */
+    margin-bottom: 0.75rem; /* Space below the title */
+}
+
+.article-content,
+.article-summary {
+    font-size: 1.3rem; /* Standard font size for content */
+    line-height: 1.6; /* Increased line height for readability */
+    color: #ffffff; /* Slightly softer color for text */
+}
+
+.article-summary {
+    width: 100%;
+    border-top: 1px solid #00ff00; /* Separator for summary */
+    padding-top: 1rem; /* Padding at the top of the summary */
+    margin-top: 1rem; /* Space above the summary */
+}
+
+.related-articles {
+    font-size: 1.3rem;
+    padding: 16px 0; /* Padding for the related articles section */
+}
+
+.related-articles .card {
+    margin-top: 1rem; /* Space above related articles card */
+    transition: box-shadow 0.3s ease; /* Smooth transition for shadow */
+}
+
+.related-articles .card:hover {
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15); /* Hover effect for the related articles */
+}
+
+.related-articles .card-header {
+    background-color: #f7f7f7; /* Different background for related articles header */
+    font-weight: bold; /* Bold font for the header */
+    padding: 12px 16px; /* Padding for header */
+}
+
+.related-articles .list-group-item {
+    border: none; /* Remove borders from list items */
+    padding: 12px 16px; /* Padding for list items */
+}
+
+.related-articles .list-group-item a {
+
+    text-decoration: none; /* No underline */
+}
+
+.related-articles .list-group-item a:hover {
+    color: #30336b; /* Darken link color on hover */
+    text-decoration: underline; /* Underline on hover */
+}

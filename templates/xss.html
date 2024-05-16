@@ -1,0 +1,167 @@
+{% extends "dashboard.html" %}
+
+{% block content %}
+
+<style>
+    @media (max-width:768px) {
+        .data-container {
+            flex-wrap: wrap;
+        }
+        .html{
+            height: 100vh;
+        }
+        p{
+            overflow-x: auto;
+        }
+    }
+    .html{
+            height: 10vh;
+        }
+    body {
+        height: 100%;
+    }
+    .data-container {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        margin-bottom: 1rem;
+    }
+    .data-block {
+        background: #0f201489;
+      
+        width: 100%;
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+        border-radius: 8px;
+        margin-right: 1rem; /* Adjusted margin */
+    }
+    .data-block img {
+        max-width: 100%;
+        height: auto;
+        display: block;
+        margin-top: 10px;
+    }
+    .btn, #submit:hover {
+    background-color: #1a3c2500 !important;
+    border: none !important;
+    color: #00ff00 !important;
+}
+    h2 {
+        
+    }
+    p,
+    h2 {
+        padding: 10px;
+        overflow: auto; /* Adjusted overflow */
+    }
+    pre {
+        overflow: auto !important;
+    }
+    ::-webkit-scrollbar {
+        height: 2px; /* Adjusted scrollbar height */
+    }
+    @media (max-width:768px) {
+        .payload-list{
+            flex-wrap: wrap !important;
+        }
+        .btn {
+        font-size: 0px !important;
+}
+.copy-button{
+align-self: start;
+}
+.footer{
+    overflow-y: scroll;
+}
+    }
+    @media (max-width:400px) {
+        .s{
+           
+           
+        }
+        p{
+         
+        }
+    }
+    .copy-notification {
+    position: fixed;
+    bottom: 40px;
+    left: 50%;
+    transform: translateX(-50%);
+    border: none;
+    background-color: black;
+    color: #00ff00;
+    padding: 16px;
+    border-radius: 5px;
+    z-index: 1000;
+    display: none; 
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateX(-50%) translateY(100%);
+    }
+    to {
+        transform: translateX(-50%) translateY(0);
+    }
+}
+
+
+.show {
+    display: block;
+    animation: slideIn 0.5s ease forwards;
+}
+
+.hidden {
+    display: none;
+}
+</style>
+
+<body>
+    <h1>XSS Fire</h1>
+
+    {% for xss in xss_data %}
+    <div class="data-container">
+        <div class="data-block">
+           <span class="s" style="display: flex;     justify-content: space-between;  overflow: hidden;"> <h2 style="color: #00ff00; height: 8vh; overflow: hidden;">XSS Fire: {{ xss.id }}</h2>  <button type="submit" class="copy-button btn"
+            data-clipboard-text="{{ xss.html_code }}" style="width: fit-content; display: inline-table;"><img src="{{ url_for('static', filename='copy.png') }}" width="25" height="25" alt="" style=""></button></span>
+            <p style="overflow: hidden;"><strong>Timestamp:</strong> {{ xss.timestamp }}</p>
+            <p style="overflow: hidden;"><strong>IP Address:</strong> {{ xss.ip }}</p>
+            <p><strong>Referer:</strong> {{ xss.referer }}</p>
+            <p><strong>User Agent:</strong> {{ xss.user_agent }}</p>
+            <p><strong>Vulnerable URL:</strong> <a href="{{ xss.vulnerable_url }}"> {{ xss.vulnerable_url }}</a></p>
+            <p><strong>Cookie:</strong> {{ xss.cookie }}</p>
+           <div></div> <p ><strong>HTML Code: </strong> <pre class="html">{{ xss.html_code }}</pre></p>
+            <div ><strong>Screenshot:</strong> <img src="{{ xss.img }}" alt="Screenshot" ></div>
+        </div>
+    </div>
+    {% endfor %}
+    <div id="copy-notification" class="copy-notification hidden">HTML code copied to clipboard!</div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js"></script>
+    <script>
+       var clipboard = new ClipboardJS('.copy-button');
+
+clipboard.on('success', function (e) {
+    var notification = document.getElementById('copy-notification');
+    notification.classList.remove('hidden');
+    notification.classList.add('show');
+    console.log('Notification shown');
+    
+    // Hide the notification after 3 seconds
+    setTimeout(function () {
+        notification.classList.remove('show');
+        console.log('Notification hidden');
+    }, 3000);
+});
+
+clipboard.on('error', function (e) {
+    alert('Unable to copy payload to clipboard.');
+});
+
+
+ </script>
+</body>
+{% endblock %}

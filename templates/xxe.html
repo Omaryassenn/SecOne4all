@@ -1,0 +1,35 @@
+{% extends "dashboard.html" %}
+
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>XXE Fire</title>
+    <style>
+        
+    </style>
+</head>
+<body>
+    <div class="log-container">
+        <h1>XXE Fire</h1>
+        <ul>
+            {% for xxe in xxes %}
+                <li>
+                    <strong>IP:</strong> {{ xxe.ip }} <br>
+                    <strong>Referer:</strong> {{ xxe.referer }} <br>
+                    <strong>File:</strong> {{ xxe.file }} <br>
+                    <div class="log-details">
+                        <strong>User Agent:</strong> {{ xxe.user_agent }} <br>
+                        <strong>Time:</strong> {{ xxe.timestamp }} <br>
+                        <strong>Vulnerable URL:</strong> {{ xxe.vulnerable_url }}
+                    </div>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+</body>
+</html>
+{% endblock %}
+

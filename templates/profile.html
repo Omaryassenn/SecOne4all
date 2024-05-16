@@ -1,0 +1,30 @@
+{% extends 'dashboard.html' %}
+{% block additional_css %}
+
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='contact.css') }}">
+{% endblock %}
+{% block content %}
+
+  <div class="profile-info contact">
+    <form method="POST" action="{{ url_for('profile') }}" enctype="multipart/form-data">
+        {{ form.hidden_tag() }}
+        <div class="form-group " style="margin-bottom:10px ;">
+          <img class="account-img" src="{{ image_file }}" alt="Profile Image">
+          <label class="form-control-file-label" for="image">Change Profile Picture</label>
+          {{ form.image(id="image", class="form-control-file") }}
+        </div>
+        <div class="form-group">
+            {{ form.first_name.label }} {{ form.first_name(class="form-control") }}
+        </div>
+        <div class="form-group">
+            {{ form.last_name.label }} {{ form.last_name(class="form-control") }}
+        </div>
+        <div class="form-group">
+          {{ form.username.label }} {{ form.username(class="form-control") }}
+      </div>
+
+        <button type="submit" class="btn btn-primary" name="submit_profile">Update Profile</button>
+    </form>
+  </div>
+{% endblock %}

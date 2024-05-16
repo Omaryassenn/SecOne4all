@@ -1,0 +1,127 @@
+.note-detail {
+    background-color: #333; /* Dark background for the note */
+    color: #fff; /* White text for readability */
+    border: 1px solid #444; /* Slightly lighter border for subtle contrast */
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.5); /* More pronounced shadow for dark mode */
+    margin: 20px auto;
+    max-width: 800px;
+    padding: 20px;
+}
+
+.note-header {
+    border-bottom: 1px solid #555; /* Subtle border for header */
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+}
+   .circle-button {
+    display: inline-block;
+    width: 60px; 
+    height: 60px; 
+    position: fixed;
+    right: 10px;
+    bottom: 20px;
+    background: #0f2014;
+    color: #00ff00;
+    text-decoration: none;
+    border: 2px solid #337346;
+    border-radius: 50%;
+    text-align: center;
+    line-height: 55px; /* Should be equal to the height for vertical alignment */
+    font-size: 2em;
+    z-index: 1000;
+}
+
+.circle-button:hover {
+    background: #010201;
+   
+}
+.circle-button:hover::after {
+    content: "Add notes";
+    position: fixed;
+    background-color: #00000095;
+    color: rgba(255, 255, 255, 0.714);
+    padding-inline: 5px;
+    border-radius: 5px;
+    right: 85px;
+    font-size: 13px;
+    }
+.note-title {
+    font-size: 24px;
+    margin: 0;
+    color: #4CAF50; /* Green color for title */
+}
+
+.note-content p {
+    font-size: 16px;
+    line-height: 1.6;
+    margin: 0;
+    color: #ccc; /* Lighter text color for content for better contrast */
+}
+
+.note-footer {
+    border-top: 1px solid #555; /* Subtle border for footer */
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+    padding-top: 10px;
+}
+
+.note-date {
+    color: #aaa; /* Light grey for date */
+    font-size: 14px;
+}
+
+.note-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.button {
+    background-color: #4CAF50; /* Green background for buttons */
+    border: none;
+    border-radius: 4px;
+    color: #fff; /* White text on buttons */
+    cursor: pointer;
+    padding: 8px 12px;
+    text-decoration: none;
+    transition: background-color 0.3s ease; /* Smooth transition for hover effect */
+}
+
+.edit-button {
+    background-color: #ffc107; /* Yellow for edit to distinguish it, if preferred */
+}
+
+.delete-button {
+    background-color: #dc354600; /* Red for delete */
+    border: none;
+}
+.delete-button :hover{
+    cursor: pointer;
+    opacity: 0.8;
+
+}
+.button:hover {
+    opacity: 0.8;
+}
+
+.delete-form {
+    display: inline; /* or flex if needed */
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .note-detail {
+        margin: 20px;
+        padding: 15px;
+    }
+
+    .note-title, .note-content p {
+        font-size: 18px;
+    }
+
+    .note-actions {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}

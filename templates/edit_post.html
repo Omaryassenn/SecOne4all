@@ -1,0 +1,128 @@
+{% extends 'dashboard.html' %}
+
+{% block title %}Add Post{% endblock %}
+
+{% block additional_css %}
+    <!-- Including Bootstrap CSS for styling -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='add_post.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='dashboard.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='login.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='contact.css') }}">
+{% endblock %}
+
+{% block content %}
+    <div class="contact">
+        <h1>{{title}}</h1>
+        <form action="{{ url_for('edit_post', post_id=post.id) }}" method="post" class="needs-validation" enctype="multipart/form-data" novalidate>
+            {{ form.hidden_tag() }}
+            <div class="form-group">
+                {{ form.title.label(class='form-label') }}
+                {{ form.title(class="form-control", required="required" , placeholder="Enter the title here") }}
+                {% if form.title.errors %}
+                    <div class="error-message alert alert-danger">{{ form.title.errors | join(", ") }}</div>
+                {% endif %}
+            </div>
+
+            <div class="form-group" id="content">
+                {{ form.description.label(class='form-label') }}
+                {{ form.description(class="form-control", required="required", id="markdown-textarea" , placeholder="Enter the description here") }}
+                {% if form.description.errors %}
+                    <div class="error-message alert alert-danger">{{ form.description.errors | join(", ") }}</div>
+                {% endif %}
+            </div>
+
+            <!-- Image upload input -->
+            <div class="form-group">
+                {{ form.image.label(class='form-label') }}
+                {{ form.image(class="form-control-file", required="required") }}
+                {% if form.image.errors %}
+                    <div class="error-message alert alert-danger">{{ form.image.errors | join(", ") }}</div>
+                {% endif %}
+            </div>
+
+
+            <div class="markdown-buttons " style="display: flex; margin-bottom: 10px;">
+                <button type="button" class="btn btn-secondary" onclick="insertMarkdown('**', '**')">Bold</button>
+                <button type="button" class="btn btn-secondary" onclick="insertMarkdown('_', '_')">Italic</button>
+                <button type="button" class="btn btn-secondary" onclick="insertMarkdown('```', '```')">Code</button>
+                <button type="button" class="btn btn-secondary" onclick="insertLink()">Link</button>
+                <button type="button" class="btn btn-secondary" onclick="insertImage()">Image</button>
+            </div>
+
+            <!-- New div for dynamic content insertion -->
+            <div id="dynamic-content"></div>
+
+            <!-- Submit button -->
+            <button class="btn btn-primary" id="submit" type="submit">Post</button>
+        </form>
+    </div>
+    <script src="path/to/marked.min.js"></script>
+    <script>
+        // Function to insert Markdown syntax at the cursor position
+        function insertMarkdown(openTag, closeTag) {
+            const textarea = document.getElementById('markdown-textarea');
+            const start = textarea.selectionStart;
+            const end = textarea.selectionEnd;
+            const selectedText = textarea.value.substring(start, end);
+            const replacement = `${openTag}${selectedText}${closeTag}`;
+            textarea.value = textarea.value.substring(0, start) + replacement + textarea.value.substring(end);
+            textarea.focus();
+            textarea.selectionStart = start + openTag.length;
+            textarea.selectionEnd = end + openTag.length;
+        }
+
+        // Function to insert an image
+        function insertImage() {
+            const textarea = document.getElementById('markdown-textarea');
+            const start = textarea.selectionStart;
+            const end = textarea.selectionEnd;
+            const imageMarkdown = '![Alt text](image-url)';
+            textarea.value = textarea.value.substring(0, start) + imageMarkdown + textarea.value.substring(end);
+            textarea.focus();
+            textarea.selectionStart = start + imageMarkdown.length;
+            textarea.selectionEnd = start + imageMarkdown.length;
+
+            // Append an image preview to the dynamic-content div
+            const dynamicContentDiv = document.getElementById('dynamic-content');
+            const imagePreview = document.createElement('img');
+            imagePreview.src = 'image-url';  // Update with the actual image URL
+            imagePreview.alt = 'Image Preview';
+            dynamicContentDiv.appendChild(imagePreview);
+        }
+
+        // Function to insert a link
+        function insertLink() {
+            const textarea = document.getElementById('markdown-textarea');
+            const start = textarea.selectionStart;
+            const end = textarea.selectionEnd;
+            const selectedText = textarea.value.substring(start, end);
+            const linkURL = prompt('Enter the URL for the link:');
+            if (linkURL) {
+                const linkMarkdown = `[${selectedText}](${linkURL})`;
+                textarea.value = textarea.value.substring(0, start) + linkMarkdown + textarea.value.substring(end);
+                textarea.focus();
+                textarea.selectionStart = start + linkMarkdown.length;
+                textarea.selectionEnd = start + linkMarkdown.length;
+            }
+        }
+
+        // Example of form validation with Bootstrap
+        (function() {
+            'use strict';
+            window.addEventListener('load', function() {
+                // Fetch all the forms we want to apply custom Bootstrap validation styles to
+                var forms = document.getElementsByClassName('needs-validation');
+                // Loop over them and prevent submission
+                var validation = Array.prototype.filter.call(forms, function(form) {
+                    form.addEventListener('submit', function(event) {
+                        if (form.checkValidity() === false) {
+                            event.preventDefault();
+                            event.stopPropagation();
+                        }
+                        form.classList.add('was-validated');
+                    }, false);
+                });
+            }, false);
+        })();
+    </script>
+{% endblock %}

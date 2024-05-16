@@ -1,0 +1,122 @@
+{% extends "dashboard.html" %}
+
+{% block head %}
+
+
+{% endblock %}
+
+{% block content %}
+
+<link rel="stylesheet" href="{{ url_for('static', filename='login.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='news.css') }}">
+
+<style>
+     .circle-button {
+    display: inline-block;
+    width: 60px; 
+    height: 60px; 
+    position: fixed;
+    right: 20px;
+    background: #0f2014;
+    color: #00ff00;
+    text-decoration: none;
+    border: 2px solid #337346;
+    border-radius: 50%;
+    text-align: center;
+    line-height: 55px; /* Should be equal to the height for vertical alignment */
+    font-size: 2em;
+    z-index: 1000;
+}
+
+.circle-button:hover {
+    background: #010201;
+   
+}
+.circle-button:hover::after {
+    content: "Add notes";
+    position: fixed;
+    background-color: #00000095;
+    color: rgba(255, 255, 255, 0.714);
+    padding-inline: 5px;
+    border-radius: 5px;
+    right: 85px;
+    font-size: 13px;
+    }
+    .delete-button img,
+.edit-button img {
+    width: 32px;
+    height: 32px;
+    transition: transform 0.3s ease;
+}
+p{
+    width: 100%;
+    overflow: auto;
+    word-wrap: break-word;
+}
+
+@media (max-width:768px) {
+    .card-title{
+        text-align: start !important;
+    }
+}
+@media (max-width:500px) {
+    
+    .delete-button img{
+        width: 27px;
+        height: 27px;
+    }
+    .note-actions{
+        gap: 2px;
+        margin-right: 5px;
+    }
+}
+</style>
+<div class="mt-4" >
+ 
+    <!-- Search form -->
+    <form action="{{ url_for('search_notes') }}" method="GET" style="    margin-inline: 2rem;">
+        <h2 cclass="mt-5" style="color:#00CF00;  text-align: center; padding-bottom: 1rem;">My Notes</h2>
+        <span class="spn">
+            <input type="text" name="query" placeholder="Search for news..." required class="form-control" style=" margin:  0 ; margin-right: 5px;">
+            <button type="submit" class="srch" style=" margin:  0 !important; ">Search</button>
+        </span>
+    </form>
+</div>
+   
+    <a href="{{ url_for('new_note') }}" class="circle-button">+</a>
+
+<div class="mt-3" >
+    <div class="news">
+{% if notes %}
+    {% for note in notes %}
+    <div class="card mb-4">
+        <div class="card-body">
+            <span style="display: flex; justify-content: space-between; width: 100%; align-items: center;">
+            <h3 class="card-title" style="color:#00ff00; text-align: center; text-decoration: underline;"><a href="{{ url_for('note', note_id=note.id) }}">{{ note.title }}</a></h3>
+            <div class="note-actions"  style="  align-items: center;">
+                <a href="{{ url_for('update_note', note_id=note.id) }}" class="delete-button">  <img src="{{ url_for('static', filename='edit1.png') }}" alt="Edit"></a>
+                <form action="{{ url_for('delete_note', note_id=note.id) }}" method="post" class="">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                    <button type="submit" class="delete-button"><img src="{{ url_for('static', filename='delete.png') }}" alt="Delete"></button>
+                </form>
+            </div>
+        </span>
+            <p  class="card-text">{{ note.content | safe }}</p>
+                <div class="note-meta">
+                    <small>Posted on: {{ note.date_posted.strftime('%Y-%m-%d') }}</small>
+                </div>
+               
+        </div>
+       
+    </div>
+        
+    </div>
+    </div>
+    </div>
+</div>
+    {% endfor %}
+</div>
+{% else %}
+<p class="no-notes" style="    text-align: center;">No notes found. Create your first note!</p>
+{% endif %}
+{% endblock %}

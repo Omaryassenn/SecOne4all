@@ -1,0 +1,78 @@
+{% extends 'dashboard.html' %}
+
+{% block content %}
+<link rel="stylesheet" href="{{ url_for('static', filename='dashboard.css') }}">
+
+<style>
+.mark-as-read-btn {
+    display: inline-block;
+    background-color: #00CF00;
+    color: #fff;
+    padding: 8px 16px;
+    border-radius: 4px;
+    text-decoration: none;
+    margin-bottom: 1rem;
+}
+.unread{
+    font-size: 1.2em !important;
+}
+main{
+    flex-grow: 1;
+}
+body{
+    height: 100%;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+.mark-as-read-btn span {
+    margin-right: 8px;
+}
+
+
+.mark-as-read-btn:hover {
+    background-color: #0099003d;
+}
+
+/* Icon styling */
+.mark-as-read-btn i {
+    margin-left: 4px;
+}
+@media (max-width:768px) {
+    .ul{
+        grid-template-columns: repeat(1, 1fr) !important;
+    }
+    body{
+        height: 100%;
+    }
+    .dv{
+        width: auto !important;
+    }
+}
+</style>
+<div style="display: flex; flex-direction: column; align-items: center;">
+<h1>Notifications</h1>
+<a class="mark-as-read-btn" href="{{ url_for('mark_notifications_as_read') }}">
+    <span>Mark Notifications as Read</span>
+    <i class="fas fa-check-circle"></i>
+</a>
+</div>
+
+<ul class="ul" style="display: grid;
+grid-template-columns: repeat(3, 1fr);
+gap: 2rem;
+width: auto;
+margin-bottom: 1rem !important;
+padding: 1rem;">
+    {% for notification in notifications %}
+    <li class="{{ 'unread' if not notification.read else 'read' }}" style="border: #06e206b3 1px solid; border-radius: 10px; padding: 15px;     word-wrap: break-word;">
+        -{{ notification.message }}<p>{{ notification.created_at }}</p>
+    </li>
+
+    {% else %}
+    <div class="dv" style="display: flex; justify-content: center; align-items: center;     width: 312%;">
+         <p style="text-align: center;">No new notifications.</p>
+    </div>
+    {% endfor %}
+</ul>
+{% endblock %}

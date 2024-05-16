@@ -1,0 +1,35 @@
+ <span style="display: flex; gap: 10px; flex-direction: column;">
+                    <form method="POST" action="{{ url_for('add_reaction') }}" class="reaction-form">
+                        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                        <input type="hidden" name="post_id" value="{{ post.id }}">
+                       
+                        <button type="button" class="btn " data-post-id="{{ post.id }}" style="justify-content: center; gap: 10px; padding: 1rem; display: flex; flex-direction: row; align-items: center;">
+                            <svg class="heart" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+                            </svg> Like
+                   
+                        <span class="like-count" data-like-count="{{ post.like_count }}">{{ post.like_count }}</span> <!-- Like count placeholder -->
+                    </form>
+                 
+               
+                <button style="display: flex; align-items: center; justify-content: center; gap: 10px; justify-content: center" type="button" class="btn toggle-comment-btn">Add Comment <i class="fas fa-arrow-down"></i><i class="fas fa-arrow-up" style="display: none;"></i> </button>
+                    <!-- Comment form -->
+                    <form method="POST" action="{{ url_for('display_posts') }}" class="comment-form">
+                        {{ forms[post.id].hidden_tag() }}
+                        <input type="hidden" name="submit_button" value="{{ post.id }}">
+                        <div class="form-group comment-input" style="display: none;">
+                            {{ forms[post.id].text.label }}
+                            {{ forms[post.id].text(rows=3, class_='form-control') }}
+                            {% if forms[post.id].text.errors %}
+                                <div class="errors">
+                                    {% for error in forms[post.id].text.errors %}
+                                        <div class="error">{{ error }}</div>
+                                    {% endfor %}
+                                </div>
+                            {% endif %}
+                            <button type="button" class="btn">Add Comment</button>
+                        </div>
+                       
+                      
+                        
+                    </form>

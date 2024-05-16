@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}SECONE4all{% endblock %}</title>
+    <!-- Updated Bootstrap CSS to version 5.x.x -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700&display=swap">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+
+    <!-- FontAwesome for social media icons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700&display=swap">
+<!-- Bootstrap Bundle with Popper.js and updated to version 5.x.x -->
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    <!-- Custom CSS -->
+    <script>
+        function toggleNav() {
+          var sidebar = document.getElementById("mySidebar");
+          if (sidebar.style.display === "none") {
+            sidebar.style.display = "block";
+          } else {
+            sidebar.style.display = "none";
+          }
+        }
+        </script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='dashboard.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='login.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='notes.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='note.css') }}">
+    {% block additional_css %}{% endblock %}
+</head>
+<style>
+    body , h1 ,p ,a ,ul ,li,h2,h3,h4,h5,h6{
+        font-family: 'Syne', sans-serif !important;
+    }
+    h1,h2,h3,h4,h5,h6 {
+   
+    font-weight:600; 
+    margin: 0px; 
+}
+    h1{
+        font-weight: bold;
+    }
+   nav{
+    overflow: hidden;
+   }
+   .w3-sidebar , #brgr{
+    display: none;
+   }
+   .w3-sidebar {
+    z-index: 55;
+  }
+   @media (max-width: 1420px) {
+        .nav-list {
+            display: none; 
+        }
+        .nav-list.active {
+            display: block;
+        }
+        .navigation{
+            display: none;
+        }
+         #brgr{
+            display: block;
+        }
+        #w3-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.nav-btn:hover {
+    text-decoration: underline;
+    color: #000000 !important;
+}
+.navbar-brand-container {
+
+    text-align: center;
+    padding: 5px;
+}
+}
+
+    
+
+    .navbar-brand {
+        font-family: 'Syne', sans-serif;
+        color: #00CF00;
+        font-weight: bold;
+        font-size: 1.6em;
+        padding-right: 3rem;
+        text-decoration: underline;
+        text-align: center;
+    }
+    .w3-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent black overlay */
+        z-index: 1; /* Ensure the overlay is above other elements */
+        display: none; /* Hide the overlay by default */
+    }
+    .w3-black, .w3-hover-black:hover {
+    color: #fff!important;
+    background-color: #0000008d!important;
+}
+.rounded-circle{
+    width: 40px;
+    height: 40px;
+}
+</style>
+<body>
+    <nav class="navigation">
+        <div class="container" style="    align-items: center;">
+            <a class="navbar-brand" href="{{ url_for('home') }}" style="font-family: 'Syne', sans-serif; color: #00CF00; font-weight: bold; font-size: 1.6em; text-decoration: underline;">SECONE4all</a>
+           <!-- <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button> -->
+            <div class="cont" id="navbarNav">
+                <ul class="nav-list" >
+                    <span class="lnks" style="display: flex;gap:4rem; margin-right: 2rem;align-items: center; ">
+                    <li class="nav-item"><a class="nav_btn" href="{{ url_for('home') }}" >Home</a></li>
+                    <li class="nav-item"><a class="nav_btn" href="{{ url_for('news') }}">News</a></li>
+                    <li class="nav-item"><a class="nav_btn" href="https://blog.mubarak.fyi">Blog</a></li>
+                    <li class="nav-item"><a class="nav_btn" href="{{ url_for('contact') }}">Contact Us</a></li>
+                    
+                    {% if current_user.is_authenticated %}
+                        <li class="nav-item"><a class="nav-btn" href="{{ url_for('display_posts') }}" style="color: #ffffff; hover: text-decoration: under-line;">Posts</a></li>
+                        <li class="nav-item"><a class="nav-btn" href="{{ url_for('notes') }}" style="color: #ffffff; hover: text-decoration: under-line;">Notes</a></li>
+                        <span style="display: flex; flex-direction: column;">
+                        <nav style="">
+                        {% if 'admin' in current_user.roles %}
+                            <ul >
+                                <li class="nav-item">
+                                    <a class="btn btn-outline-primary" href="#" id="bugBountyDropdown">Bug Bounty</a>
+                                    <div class="dropdown-menu" aria-labelledby="bugBountyDropdown" >
+                                        <a class="dropdown-item" href="{{url_for('view_webhook')}}">Web Hock</a>
+                                        <a class="dropdown-item" href="{{ url_for('pxss') }}">XSS Payloads</a>
+                                        <a class="dropdown-item" href="{{ url_for('view_logs') }}">XSS Fire</a>
+                                        <a class="dropdown-item" href="{{ url_for('pxxe') }}">XXE Payloads</a>
+                                        <a class="dropdown-item" href="{{ url_for('view_xxe') }}">XXE Fire</a>
+                                        <!-- Add more links as needed -->
+                                    </div>
+                                </li>
+                            </ul>
+                        {% endif %}
+                        </nav>
+                    </span>
+                </span>
+                    {% endif %}
+                </ul>
+                <ul class="navbar-nav" style="margin-left: 20rem;">
+                    {% if current_user.is_authenticated %}
+                        <!-- Dropdown for user profile and logout -->
+                        <li class="nav-item dropdown" style="list-style: none;">
+                            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="margin-right: 2.5rem;">
+                                <img src="{{ url_for('static', filename='uploads/' + current_user.image) }}" alt="User Image" class="rounded-circle" width="40" height="40" style="border-radius: 100%;">
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+                                <a class="dropdown-item" href="{{ url_for('profile') }}">My Profile</a>
+                                <a class="dropdown-item" href="{{ url_for('change_password') }}">Change Password</a>
+                               <a class="dropdown-item" href="{{ url_for('notifications') }}">Notifications</a>
+                                {% if 'admin' in current_user.roles %}
+                                      <a class="dropdown-item" href="/admin">Admin Dashboard</a>
+                                      <a class="dropdown-item" href="/create/admin">Create Admin Account</a>
+                                {% endif %}
+                                <a class="dropdown-item" href="{{ url_for('logout') }}">Logout</a>
+                            </div>
+                        </li>
+                    {% else %}
+                        <li class="nav-item" style="list-style: none;"><a class="btn btn-outline-primary" href="{{ url_for('login') }}">Login</a></li>
+                        <li class="nav-item" style="list-style: none;"><a class="btn btn-outline-primary" href="{{ url_for('register') }}" id="rgstr">Register</a></li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <div class="w3-bar w3-black" id="brgr">
+        <button class="w3-bar-item w3-button w3-xlarge" onclick="w3_open()">
+            <i class="fa fa-bars"></i>
+        </button>
+        <div class="navbar-brand-container">
+            <a class="navbar-brand" href="{{ url_for('home') }}">SECONE4all</a>
+        </div>
+    </div>
+    <div class="w3-overlay" onclick="w3_close()" style="cursor:pointer" id="myOverlay"></div>
+    <nav id="mySidebar" class="w3-sidebar w3-bar-block w3-black w3-card" style="width:30%; text-align: right;  position: relative ;">
+        <button class="w3-bar-item w3-button w3-xlarge" onclick="w3_close()"><i class="fa fa-bars"></i></button>
+        <a class=" w3-bar-item w3-button" href="{{ url_for('home') }}">Home</a>
+        <a class=" w3-bar-item w3-button" href="{{ url_for('news') }}">News</a>
+         <a class=" w3-bar-item w3-button" href="https://blog.mubarak.fyi">Blog</a>
+        <a class=" w3-bar-item w3-button" href="{{ url_for('contact') }}">Contact Us</a>
+        {% if current_user.is_authenticated %}
+            <a class="nav-btn w3-bar-item w3-button" href="{{ url_for('display_posts') }}">Posts</a>
+            <a class="nav-btn w3-bar-item w3-button" href="{{ url_for('notes') }}" style="color: #ffffff; hover: text-decoration: under-line;">Notes</a>
+            <div class="w3-dropdown-hover">
+                <button class="w3-button" onclick="toggleDropdown('bugBountyDropdown')">Bug Bounty <i class="fa fa-caret-down"></i></button>
+
+                <div class="w3-dropdown-content w3-bar-block" aria-labelledby="bugBountyDropdown" style="position: relative;  background-color: #000000; color: #ffffff;">
+                    <a class=" w3-bar-item w3-button" href="{{ url_for('view_webhook') }}">Web Hock</a>
+                    <a class=" w3-bar-item w3-button" href="{{ url_for('pxss') }}">XSS Payloads</a>
+                    <a class=" w3-bar-item w3-button" href="{{ url_for('view_logs') }}">XSS Fire</a>
+                    <a class=" w3-bar-item w3-button" href="{{ url_for('pxxe') }}">XXE Payloads</a>
+                    <a class=" w3-bar-item w3-button" href="{{ url_for('view_xxe') }}">XXE Fire</a>
+                </div>
+            </div>
+            <div class="w3-dropdown-hover">
+                <button class="w3-button" onclick="toggleDropdown('profileDropdown')">Profile <i class="fa fa-caret-down"></i></button>
+                <div class="w3-dropdown-content w3-bar-block" aria-labelledby="bugBountyDropdown" style="position: relative;  background-color: #000000; color: #ffffff;">
+                    <a class=" w3-bar-item w3-button" href="{{ url_for('profile') }}">My Profile</a>
+                    <a class=" w3-bar-item w3-button" href="{{ url_for('change_password') }}">Change Password</a>
+                    <a class=" w3-bar-item w3-button" href="{{ url_for('notifications') }}">Notifications</a>
+                    {% if 'admin' in current_user.roles %}
+                        <a class=" w3-bar-item w3-button" href="/admin">Admin Dashboard</a>
+                        <a class=" w3-bar-item w3-button" href="/create/admin">Create Admin Account</a>
+                    {% endif %}
+                    <a class=" w3-bar-item w3-button" href="{{ url_for('logout') }}">Logout</a>
+                </div>
+            </div>
+        {% else %}
+            <a class="w3-bar-item w3-button" href="{{ url_for('login') }}" class="rgstr">Login</a>
+            <a class="w3-bar-item w3-button" href="{{ url_for('register') }}" class="rgstr">Register</a>
+        {% endif %}
+    </nav>
+
+    <main role="main" class="main">
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                <div class="alert alert-success" role="alert">
+                    {% for message in messages %}
+                        <p class="mb-0">{{ message }}</p>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+
+        {% block content %}{% endblock %}
+    </main>
+    <div class="footer">
+        <div class="row">
+            <!-- Company Information -->
+            <div class="header-footer" style="
+            margin-inline: -10.5rem; display: flex; flex-direction: column; gap: .5rem;">
+                <h3 style="color: #00CF00;">SECONE4all</h3>
+                <p class="small">Dedicated to providing top-notch security solutions and information.</p>
+                <span class="text-muted" style="color: #2c9d2c;">&copy;{{ current_year }} SECONE4all</span>
+            </div>
+            <!-- Quick Links -->
+            <div class="footer-links">
+                <h4 style="margin-top: .5rem;">Quick Links</h4>
+                <ul class="list-unstyled" style="justify-content: center; ">
+                    <li><a href="#" class="text-white">About Us</a></li>
+                    <li><a href="#" class="text-white">Services</a></li>
+                    <li><a href="#" class="text-white">Contact</a></li>
+                </ul>
+            </div>
+            <!-- Social Media Links -->
+            <div class="sm-links">
+                <h5>Follow Us</h5>
+                <span>
+                    <a href="https://www.facebook.com/SECONE4all" class="text-white me-2"><i class="fab fa-facebook-f"></i></a>
+                    <a href="https://www.twitter.com/SECONE4all" class="text-white me-2"><i class="fab fa-twitter"></i></a>
+                    <a href="https://www.instagram.com/SECONE4all" class="text-white me-2"><i class="fab fa-instagram"></i></a>
+                    <a href="https://www.linkedin.com/company/SECONE4all" class="text-white"><i class="fab fa-linkedin-in"></i></a>
+                </span>
+            </div>
+        </div>
+    </div>
+
+
+<!-- FontAwesome for social media icons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+    
+<!-- Bootstrap Bundle with Popper.js and updated to version 5.x.x -->
+<script>
+   function w3_open() {
+  document.getElementById("mySidebar").style.display = "block";
+  document.getElementById("myOverlay").style.display = "block";
+}
+
+function w3_close() {
+  document.getElementById("mySidebar").style.display = "none";
+  document.getElementById("myOverlay").style.display = "none";
+}
+
+</script>
+<script>
+    function toggleDropdown(dropdownId) {
+      var dropdownContent = document.getElementById(dropdownId);
+      if (dropdownContent.style.display === "none" || dropdownContent.style.display === "") {
+        dropdownContent.style.display = "block";
+      } else {
+        dropdownContent.style.display = "none";
+      }
+    }
+</script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
+    {% block additional_js %}{% endblock %}
+</body>
+</html>

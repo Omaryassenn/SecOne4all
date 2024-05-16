@@ -1,0 +1,63 @@
+{% extends "dashboard.html" %}
+
+{% block title %}News Article{% endblock %}
+
+{% block additional_css %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='news_article.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='login.css') }}">
+   
+{% endblock %}
+
+{% block content %}
+<style>
+    
+    @media (max-width:768px) {
+   
+    h1,.text-muted,h2,.article-content{
+        
+            overflow-x: auto;
+       
+    }
+}
+.article-content , .article-summary{
+    word-wrap: break-word;
+}
+</style>
+    <div class="container" style="border:2px solid #014227; margin: 2rem; border-radius: 5px; background-color: #07100e9d !important;" >
+        <div class="artcl" style="width: 100%;">
+            <div class="col">
+                <article class="news-article card">
+                    <div class="card-header" >
+                        {% if news.author and news.author.image %}
+                            <img src="{{ url_for('static', filename='uploads/' + news.author.image) }}" alt="{{ news.author.name }}" class="rounded-circle me-2" style="margin-top: 1rem; object-fit: cover;">
+                        {% else %}
+                            <img src="{{ url_for('static', filename='uploads/default.png') }}" alt="Default Author Image" class="rounded-circle me-2" style="width: 50px; height: 50px; object-fit: cover;">
+                        {% endif %}
+                        <div style="display: flex; align-items: center;">
+                            <h1 class="mb-0" style="margin: 5px; color: #ffffff; width: auto;">{{ news.author.username }}</h1>
+                            <p class=" mb-0" style="font-size: 1.2rem; color: #ffffff; width: auto; background-color: rgba(106, 142, 35, 0);">{{ news.created_at.strftime("%B %d, %Y") }}</p>
+                        </div>
+                    </div>
+                    <img src="{{ url_for('static', filename='uploads/' + news.image) }}" alt="{{ news.title }}" class="img-fluid mb-4 card-img-top">
+                    <div class="card-body">
+                        <h1 class="card-title" style="text-align: start; word-wrap: break-word;">{{ news.title }}</h1>
+                        <div class="article-content mb-3">{{ news.content | markdownify_filter }}</div>
+                        <div class="article-summary">{{ news.summary | markdownify_filter }}</div>
+                    </div>
+                </article>
+                <div class="card">
+                    <div class="card-header" style="font-size: 1.3rem;">Related Articles</div>
+                    <ul class="list-group list-group-flush">
+                        {% for related_article in related_articles %}
+                            <li class="list-group-item">
+                                <a href="{{ url_for('view_news', id=related_article.id) }}">
+                                    {{ related_article.title }}
+                                </a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

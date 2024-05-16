@@ -1,0 +1,39 @@
+{% extends 'dashboard.html' %}
+{% block content %}
+
+<style>
+.card{
+    display: grid;
+    grid-template-columns: repeat(1, 1fr);
+    border: 2px rgba(103, 121, 97, 0.429) solid;
+     border-radius: 5px;
+    padding: 1rem;
+    list-style:circle ;
+}
+.a{
+
+    list-style:circle ;
+    text-align: start;
+    text-decoration: none;
+   margin-top: 1rem;
+    color: #00ff00 !important ;
+}
+
+</style>
+    <h1 style="color: aliceblue; ">Search Results for "{{ query }}" in News</h1>
+    {% if news_items %}
+        <ul>
+            {% for news in news_items %}
+                <li class="card" >
+                    <!-- Link the news title to its detail page using the 'view_news' route -->
+                    <h2 style="text-align: start; margin-bottom: 1rem;"><a href="{{ url_for('view_news', id=news.id) }}" class="a">{{ news.title }}</a></h2>
+                    <p>{{ news.content | safe }}</p>
+                    <!-- Optionally, add a 'Read More' link -->
+                    <a href="{{ url_for('view_news', id=news.id) }}" class="a">Read More</a>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p style="text-align: center;">No news found matching "{{ query }}".</p>
+    {% endif %}
+{% endblock %}

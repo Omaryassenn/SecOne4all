@@ -1,0 +1,92 @@
+{% extends "dashboard.html" %}
+
+{% block head %}
+<!-- Include Bootstrap CSS -->
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700&display=swap">
+<link rel="stylesheet" href="{{ url_for('static', filename='dashboard.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='login.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='contact.css') }}">
+
+{% endblock %}
+
+{% block content %}
+<style>
+  main{
+   flex-grow:1;
+   display: flex;
+   align-items: center;
+}
+body{
+display: flex;
+flex-direction: column;
+height: 100%;
+    min-height: 100vh;
+}
+h1{
+    color: #00CF00 !important;
+}
+
+*{
+  overflow-x: hidden !important;
+}
+/*@keyframes moveText {
+        0% { transform: translateX(0); }
+        100% { transform: translateX(100%); }
+    }
+
+    .lead.text-light {
+        animation: moveText 7s linear infinite;
+    } */
+    .command-line {
+        background-color: #131a21;
+        border-radius: 5px;
+        display: inline-block;
+        padding: 10px;
+        white-space: nowrap;
+        overflow: hidden;
+        position: relative;
+        font-family: monospace;
+        width: 0; /* Initial width to start typing animation from the beginning */
+    }
+    .command-line::after {
+        content: "_"; /* Initial cursor */
+        display: inline-block;
+        animation: blink 0.7s infinite alternate;
+        color: #1ad420;
+    }
+    @keyframes typing {
+        from { width: 0; }
+        to { width: 100%; }
+    }
+    @keyframes blink {
+        to { opacity: 0; }
+    }
+    .command-line::before {
+        content: 'A launchpad for exploring security testing and fostering shared understanding.';
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        white-space: nowrap;
+        overflow: hidden;
+        animation: typing 10s steps(80) forwards; /* Adjust duration and steps as needed */
+    }
+</style>
+<!-- Content of the page -->
+<body>
+<main style="display: flex; justify-content: center; padding-bottom: 1rem; flex: 1;">
+<div class="contact " style="     display: flex;
+    justify-content: center;
+    margin-top: 1rem;
+    padding: 2rem;
+    width: auto;
+    background: #0a110fae;
+    border-radius: 5px;
+    box-shadow: 0 5px 15px rgba(1, 150, 16, 0.28);
+    flex-direction: column;">
+        <h1 class="header" style="color: #00CF00; margin-bottom: 1rem;">Welcome to SecOn4All</h1>
+       <div style="background-color: #131a21; border-radius: 5px; display: flex; align-items: center;"><p class="lead text-light typing" style=" color: #ffffffba; padding: 10px; display: inline-block; border-radius: 5px;">A launchpad for exploring security testing and fostering shared understanding.</p></div> 
+    <!-- Rest of your content -->
+</div>
+</main>
+</body>
+{% endblock %}

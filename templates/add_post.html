@@ -1,0 +1,150 @@
+{% extends 'dashboard.html' %}
+
+{% block title %}Add Post{% endblock %}
+
+{% block additional_css %}
+    <!-- Including Bootstrap CSS for styling -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='add_post.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='dashboard.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='contact.css') }}">
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/2.3.3/purify.min.js"></script>
+{% endblock %}
+<style>
+
+</style>
+{% block content %}
+
+    <div class="contact">
+        <h1>{{title}}</h1>
+        <form action="{{ url_for('add_post') }}" method="post" class="needs-validation" enctype="multipart/form-data" >
+            {{ form.hidden_tag() }}
+            <div class="form-group">
+                {{ form.title.label(class='form-label') }}
+                {{ form.title(class="form-control", required="required" , placeholder="Enter the title here") }}
+                {% if form.title.errors %}
+                    <div class="error-message alert alert-danger">{{ form.title.errors | join(", ") }}</div>
+                {% endif %}
+            </div>
+
+            <div class="form-group" id="content">
+                {{ form.description.label(class='form-label') }}
+                {{ form.description(class="form-control", required="required", id="markdown-textarea" , placeholder="Enter the description here") }}
+                {% if form.description.errors %}
+                    <div class="error-message alert alert-danger">{{ form.description.errors | join(", ") }}</div>
+                {% endif %}
+            </div>
+
+            <!-- Image upload input -->
+            <div class="form-group">
+                {{ form.image.label(class='form-label') }}
+                {{ form.image(class="form-control-file", required="required") }}
+                {% if form.image.errors %}
+                    <div class="error-message alert alert-danger">{{ form.image.errors | join(", ") }}</div>
+                {% endif %}
+            </div>
+
+            
+            <div class="markdown-buttons " style="display: flex; margin-bottom: 10px;">
+                <div id="markdown-buttons">
+                    <button class="btn" onclick="formatText('bold')">Bold</button>
+                    <button class="btn" onclick="formatText('italic')">Italic</button>
+                    <button class="btn" onclick="formatText('code')">Code</button>
+                    <!-- Add more buttons for other formatting options -->
+                </div>
+                
+            </div>
+
+            <!-- New div for dynamic content insertion -->
+            <div id="dynamic-content"></div>
+
+            <!-- Submit button -->
+            <button class="btn btn-primary" id="submit" type="submit">Post</button>
+        </form>
+    </div>
+    <div id="markdown-output"></div>
+
+    <script>
+    function formatText(type) {
+        var textarea = document.getElementById('markdown-textarea');
+        var outputDiv = document.getElementById('markdown-output');
+        var startPos = textarea.selectionStart;
+        var endPos = textarea.selectionEnd;
+        var selectedText = textarea.value.substring(startPos, endPos);
+        var newText;
+        
+        switch (type) {
+            case 'bold':
+                newText = '**' + selectedText + '**';
+                break;
+            case 'italic':
+                newText = '_' + selectedText + '_';
+                break;
+            case 'code':
+                newText = '`' + selectedText + '`';
+                break;
+            // Add more cases for other formatting options
+        }
+        
+        // Replace selected text with formatted text
+        textarea.value = textarea.value.substring(0, startPos) + newText + textarea.value.substring(endPos);
+        
+        // Update the preview
+        outputDiv.innerHTML = DOMPurify.sanitize(marked(textarea.value));
+    }
+    </script>
+    
+    <script>
+    function insertMarkdown(startTag, endTag) {
+    var textarea = document.getElementById('markdown-textarea');
+    var startPos = textarea.selectionStart;
+    var endPos = textarea.selectionEnd;
+    var selectedText = textarea.value.substring(startPos, endPos);
+    var replacement = startTag + selectedText + endTag;
+    
+    // Replace the selected text with the replacement content
+    textarea.setRangeText(replacement, startPos, endPos, 'end');
+
+    // Set the cursor position after the inserted content
+    var cursorPos = startPos + startTag.length + selectedText.length + endTag.length;
+    textarea.setSelectionRange(cursorPos, cursorPos);
+    
+    // Focus on the textarea
+    textarea.focus();
+}
+
+
+    function insertLink() {
+        var url = prompt("Enter the URL:");
+        if (url) {
+            insertMarkdown('[', '](' + url + ')');
+        }
+    }
+
+    function insertImage() {
+        var url = prompt("Enter the image URL:");
+        if (url) {
+            insertMarkdown('![', '](' + url + ')');
+        }
+    }
+    
+        // Example of form validation with Bootstrap
+        (function() {
+            'use strict';
+            window.addEventListener('load', function() {
+                // Fetch all the forms we want to apply custom Bootstrap validation styles to
+                var forms = document.getElementsByClassName('needs-validation');
+                // Loop over them and prevent submission
+                var validation = Array.prototype.filter.call(forms, function(form) {
+                    form.addEventListener('submit', function(event) {
+                        if (form.checkValidity() === false) {
+                            event.preventDefault();
+                            event.stopPropagation();
+                        }
+                        form.classList.add('was-validated');
+                    }, false);
+                });
+            }, false);
+        })();
+    </script>
+{% endblock %}

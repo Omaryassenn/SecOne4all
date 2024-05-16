@@ -1,0 +1,42 @@
+{% extends "dashboard.html" %}
+{% block head %}
+    
+    <link rel="stylesheet" href="{{ url_for('static', filename='news.css') }}">
+{% endblock %}
+{% block content %}
+<style>
+.delete-button img,
+.edit-button img {
+    width: 32px;
+    height: 32px;
+    transition: transform 0.3s ease;
+}
+p{
+    width: 100%;
+    overflow: auto;
+    word-wrap: break-word;
+}
+</style>
+<div class="container" style="border:2px solid #014227; margin: 2rem; border-radius: 5px; background-color: #07100e9f;">
+<article class="artcl" style="width: 100%;">
+    <header class="note-header" style="display: flex; justify-content: space-between;">
+        <h1 class="note-title" style="color: #00ff00 ;">{{ note.title }}</h1>
+        <div class="note-actions">
+            <a href="{{ url_for('update_note', note_id=note.id) }}" class="delete-button" style="padding-right: 10px;"> <img src="{{ url_for('static', filename='edit1.png') }}" alt="Edit"></a>
+            <form action="{{ url_for('delete_note', note_id=note.id) }}" method="post" class="delete-form">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                <button type="submit" class=" delete-button">    <img src="{{ url_for('static', filename='delete.png') }}" alt="Delete">
+                </button>
+            </form>
+        </div>
+    </header>
+    <section class="note-content">
+        <p style="color: white; font-size: 1.3em;">{{ note.content | safe }}</p> <!-- Use 'safe' filter if you trust the content to render HTML correctly -->
+    </section>
+    <footer class="note-footer">
+        <small class="note-date" style="color: white; font-size: 1.3em;">Posted on: {{ note.date_posted.strftime('%Y-%m-%d') }}</small>
+       
+    </footer>
+</article>
+</div>
+{% endblock %}

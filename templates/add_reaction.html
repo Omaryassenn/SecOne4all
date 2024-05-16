@@ -1,0 +1,43 @@
+
+{% extends 'dashboard.html' %}
+
+{% block title %}Posts{% endblock %}
+
+{% block additional_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='display_posts.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1>Posts</h1>
+    {% for post in posts %}
+        <div class="post">
+            <!-- The action should point to an endpoint that handles the reaction submission -->
+                <div class="inside-post">
+                    <h2>{{ post.title }}</h2> <!-- Changed to h2 to maintain hierarchical heading structure -->
+                    <p>{{ post.description }}</p>
+                    <!-- Display the number of reactions. Assuming 'post.reactions' is a list of reaction objects. -->
+                    <p>Reactions: {{ post.reactions.count() }}</p>
+                </div>
+                <form method="POST" action="{{ url_for('add_reaction', post_id=post.id) }}">
+                {{ forms[post.id].hidden_tag() }}
+                <fieldset class="react">
+                    {{ forms[post.id].reaction.label }}
+                    {{ forms[post.id].reaction(class='reaction-class') }}  <!-- Add a class for styling if needed -->
+                    {% if forms[post.id].reaction.errors %}
+                        <ul class="errors">
+                            {% for error in forms[post.id].reaction.errors %}
+                                <li>{{ error }}</li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+                </fieldset>
+                <button type="submit" class="btn react-btn">React</button>  <!-- Add classes for styling -->
+            </form>
+        </div>
+    {% else %}
+        <p>No posts to display.</p> <!-- Handle the case where there are no posts -->
+    {% endfor %}
+</div>
+{% endblock %}
+1

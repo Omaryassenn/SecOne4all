@@ -1,0 +1,63 @@
+{% extends "dashboard.html" %}
+   
+
+{% block content %}
+<style>
+    
+    .a {
+        color: #15cb05 !important;
+        font-weight: bold;
+    }
+.cntnr{
+    border: #15cb05 2px solid;
+    border-radius: 5px;
+    padding: 1rem;
+}
+    @media (max-width:768px) {
+        .cntnr{
+            width: 100%;
+            margin-inline: 1rem;
+        }
+        .footer{
+            overflow-y: scroll;
+        }
+    }
+
+   
+    
+</style>
+    <!-- <nav style="display: flex; align-items: center; justify-content: center; gap: 1rem; margin-bottom: 2rem;"> why???
+
+        <a href="/xss-fire" class="a">XSS Fire</a>
+        <a href="/payloads-xss" class="a">Payloads XSS</a>
+	<a href="/xxe-fire" class="a">XXE Fire</a>
+        <a href="/payloads-xxe" class="a">Payloads XXE</a>
+
+    </nav>
+    -->
+    <section style="text-align: center; margin-bottom: 2rem;">
+        <h1>Welcome to Bug Bounty!</h1>
+        <p>This is a sample Bug Bounty page.</p>
+    </section>
+<div style="display: flex; gap: 3rem; justify-content: center; align-items: center; flex-wrap: wrap; ">
+    
+
+    <section class="cntnr">
+        <h2>XSS Fire</h2>
+        <p>Explore and report XSS vulnerabilities.</p>
+    </section>
+
+    <section class="cntnr">
+        <h2>Payloads XSS</h2>
+        <p>View and manage XSS payloads.</p>
+    </section>
+    <section class="cntnr">
+        <h2>Payloads XSS</h2>
+        <p>View and manage XSS payloads.</p>
+    </section>
+    <section class="cntnr">
+        <h2>Payloads XSS</h2>
+        <p>View and manage XSS payloads.</p>
+    </section>
+</div>
+{% endblock %}
